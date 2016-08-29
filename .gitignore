@@ -41,8 +41,12 @@ Thumbs.db
 .\#*
 *~
 
-# other files #
+# Other files #
 ###############
-*.pdf
-*.eps
+*.txt
+*.swp
 *.root
+*.eps
+*.pdf
+*.pcm
+*__*
