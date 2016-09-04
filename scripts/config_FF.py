@@ -15,28 +15,30 @@ trig_el = []
 #trig_el.append('HLT_2e12_lhloose_L12EM10VH')   #
 
 trig_mu = []
-trig_mu.append('HLT_mu20_L1MU15')
-trig_mu.append('HLT_mu24')
-trig_mu.append('HLT_mu20_iloose_L1MU15')
+#trig_mu.append('HLT_mu20_L1MU15')
+#trig_mu.append('HLT_mu24')
+trig_mu.append('HLT_mu26_imedium')
 trig_mu.append('HLT_mu50')
+
+#trig_mu.append('HLT_mu26_ivarmedium')
 
 all_triggers = trig_el + trig_mu
 triglist = ",".join(all_triggers)
 
 # This is just a RootCore path!!!
-path_ext = "$ROOTCOREBIN/data/SSDiLepAnalysis/External"
+path_ext = "$ROOTCOREBIN/data/SSDiLepAnalysis/External2016"
 
 # merged
-GRL_file = os.path.join(path_ext,
-    "merged_GRL_2015_2016.xml")
+#GRL_file = os.path.join(path_ext,
+#    "merged_GRL_2015_2016.xml")
 
 # 2015
 #GRL_file = os.path.join(path_ext,
 #   "data15_13TeV.periodAllYear_DetStatus-v79-repro20-02_DQDefects-00-02-02_PHYS_StandardGRL_All_Good_25ns.xml")
 
 # 2016
-#GRL_file = os.path.join(path_ext,
-#    "data16_13TeV.periodAllYear_DetStatus-v81-pro20-10_DQDefects-00-02-02_PHYS_StandardGRL_All_Good_25ns.xml")
+GRL_file = os.path.join(path_ext,
+    "data16_13TeV.periodAllYear_DetStatus-v81-pro20-10_DQDefects-00-02-02_PHYS_StandardGRL_All_Good_25ns.xml")
 
 
 #-------------------
@@ -47,23 +49,46 @@ GRL_file = os.path.join(path_ext,
 
 LUMICALC_files = []
 
+# ------
 # merged
-LUMICALC_files.append("ilumicalc_histograms_None_276262-304494_OflLumi-13TeV-005.root")
-LUMICALC_files.append("ilumicalc_histograms_HLT_mu20_L1MU15_276262-304494_OflLumi-13TeV-005.root:HLT_mu20_L1MU15")
-LUMICALC_files.append("ilumicalc_histograms_HLT_mu24_276262-304494_OflLumi-13TeV-005.root:HLT_mu24")
+# ------
+#LUMICALC_files.append("ilumicalc_histograms_None_276262-304494_OflLumi-13TeV-005.root")
 
-LUMICALC_files.append("ilumicalc_histograms_HLT_mu20_iloose_L1MU15_276262-304494_OflLumi-13TeV-005.root")
-LUMICALC_files.append("ilumicalc_histograms_HLT_mu50_276262-304494_OflLumi-13TeV-005.root")
+# prescaled
+#LUMICALC_files.append("ilumicalc_histograms_HLT_mu20_L1MU15_276262-304494_OflLumi-13TeV-005.root:HLT_mu20_L1MU15")
+#LUMICALC_files.append("ilumicalc_histograms_HLT_mu24_276262-304494_OflLumi-13TeV-005.root:HLT_mu24")
 
+# unprescaled
+#LUMICALC_files.append("ilumicalc_histograms_HLT_mu26_imedium_276262-304494_OflLumi-13TeV-005.root")
+#LUMICALC_files.append("ilumicalc_histograms_HLT_mu50_276262-304494_OflLumi-13TeV-005.root")
+
+
+# ------
 # 2015
-#LUMICALC_files.append("ilumicalc_histograms_None_276262-284484.root")
-#LUMICALC_files.append("ilumicalc_histograms_HLT_mu20_iloose_L1MU15_276262-284484.root")
-##LUMICALC_files.append("ilumicalc_histograms_HLT_mu50_276262-284484.root")
-#LUMICALC_files.append("ilumicalc_histograms_HLT_mu20_L1MU15_276262-284484.root:HLT_mu20_L1MU15")
+# ------
+#LUMICALC_files.append("ilumicalc_histograms_None_276262-284484_OflLumi-13TeV-005.root")
 
+# prescaled
+#LUMICALC_files.append("ilumicalc_histograms_HLT_mu20_L1MU15_276262-284484_OflLumi-13TeV-005.root:HLT_mu20_L1MU15")
+#LUMICALC_files.append("ilumicalc_histograms_HLT_mu24_276262-284484_OflLumi-13TeV-005.root:HLT_mu24")
+
+# unprescaled
+#LUMICALC_files.append("ilumicalc_histograms_HLT_mu26_imedium_276262-284484_OflLumi-13TeV-005.root")
+#LUMICALC_files.append("ilumicalc_histograms_HLT_mu50_276262-284484_OflLumi-13TeV-005.root")
+
+
+# ------
 # 2016
-#LUMICALC_files.append("ilumicalc_histograms_HLT_mu50_297730-304494_OflLumi-13TeV-005.root")
+# ------
+LUMICALC_files.append("ilumicalc_histograms_None_297730-304494_OflLumi-13TeV-005.root")
 
+# prescaled
+#LUMICALC_files.append("ilumicalc_histograms_HLT_mu20_L1MU15_297730-304494_OflLumi-13TeV-005.root:HLT_mu20_L1MU15")
+#LUMICALC_files.append("ilumicalc_histograms_HLT_mu24_297730-304494_OflLumi-13TeV-005.root:HLT_mu24")
+
+# unprescaled
+LUMICALC_files.append("ilumicalc_histograms_HLT_mu50_297730-304494_OflLumi-13TeV-005.root")
+LUMICALC_files.append("ilumicalc_histograms_HLT_mu26_imedium_297730-304494_OflLumi-13TeV-005.root")
 
 
 for idx,file in enumerate(LUMICALC_files):
@@ -89,8 +114,8 @@ BasicEventSelectionDict = {"m_name"                       : "SSDiLep",
                            "m_lumiCalcFileNames"          : LUMICALC_config,
                            "m_PRWFileNames"               : PRW_config,
                            "m_useMetaData"                : True, 
-                           "m_derivationName"             : "HIGG3D3Kernel",
-                           #"m_derivationName"             : "EXOT12Kernel",
+                           #"m_derivationName"             : "HIGG3D3Kernel",
+                           "m_derivationName"             : "EXOT12Kernel",
                            #"m_derivationName"             : "EXOT0Kernel",
                            #"m_derivationName"             : "TOPQ1Kernel",
                            "m_applyPrimaryVertexCut"      : False,
@@ -205,12 +230,8 @@ MuonSelectorDict =       { "m_name"                       : "muonSelect_selectio
                            "m_TrackIsoEff"                : "0.1*x",
                            "m_CaloBasedIsoType"           : "topoetcone20",
                            "m_TrackBasedIsoType"          : "ptvarcone30",
-                           #"m_singleMuTrigChains"         : "HLT_mu20_L1MU15,HLT_mu20_iloose_L1MU15,HLT_mu50",
-                           #"m_singleMuTrigChains"         : "HLT_mu20_iloose_L1MU15,HLT_mu50",
-                           #"m_singleMuTrigChains"         : "HLT_mu20_iloose_L1MU15",
-                           #"m_singleMuTrigChains"         : "HLT_mu50",
-                           "m_singleMuTrigChains"         : "HLT_mu24,HLT_mu20_L1MU15,HLT_mu20_iloose_L1MU15,HLT_mu50",
-                           #"m_singleMuTrigChains"         : "HLT_mu24,HLT_mu20_L1MU15",
+                           #"m_singleMuTrigChains"         : "HLT_mu24,HLT_mu20_L1MU15,HLT_mu26_imedium,HLT_mu50",
+                           "m_singleMuTrigChains"         : "HLT_mu26_imedium,HLT_mu50",
                            "m_diMuTrigChains"             : "",
                          }                                
                                                           
@@ -316,6 +337,8 @@ MuonEfficiencyCorrectorLooseDict = { "m_name"                  : "muonEfficiency
                                 "m_systNameTrig"          : "",
                                 "m_systNameTTVA"          : "",
                                 #"m_runNumber"             : 276329,
+                                #"m_runNumber"             : 300345,
+                                #"m_runNumber"             : 304494,
                                 "m_useRandomRunNumber"    : True,
                                 "m_outputSystNamesReco"   : "MuonEfficiencyCorrector_RecoSyst",
                                 "m_outputSystNamesIso"    : "MuonEfficiencyCorrector_IsoSyst",
@@ -329,10 +352,7 @@ MuonEfficiencyCorrectorLooseDict = { "m_name"                  : "muonEfficiency
                                 "m_WorkingPointRecoTrig"  : "Loose",
                                 "m_WorkingPointIsoTrig"   : "Loose",
                                 "m_WorkingPointTTVA"      : "TTVA",
-                                #"m_SingleMuTrig"          : "HLT_mu20_iloose_L1MU15_OR_HLT_mu50",
-                                #"m_SingleMuTrig"          : "HLT_mu20_iloose_L1MU15",
-                                #"m_SingleMuTrig"          : "HLT_mu50",
-                                "m_SingleMuTrig"          : "",
+                                "m_SingleMuTrig"          : "HLT_mu26_imedium_OR_HLT_mu50",
                                 "m_DiMuTrig"              : "",
                               }
 
@@ -381,9 +401,7 @@ MuonEfficiencyCorrectorMediumDict = { "m_name"                  : "muonEfficienc
                                      "m_WorkingPointRecoTrig"  : "Loose",
                                      "m_WorkingPointIsoTrig"   : "FixedCutLoose",
                                      "m_WorkingPointTTVA"      : "TTVA",
-                                     #"m_SingleMuTrig"          : "HLT_mu20_iloose_L1MU15_OR_HLT_mu50",
-                                     #"m_SingleMuTrig"          : "HLT_mu50",
-                                     "m_SingleMuTrig"          : "",
+                                     "m_SingleMuTrig"          : "HLT_mu26_imedium_OR_HLT_mu50",
                                      "m_DiMuTrig"              : "",
                                    }
 
@@ -432,9 +450,7 @@ MuonEfficiencyCorrectorTightDict = { "m_name"                  : "muonEfficiency
                                      "m_WorkingPointRecoTrig"  : "Loose",
                                      "m_WorkingPointIsoTrig"   : "FixedCutTightTrackOnly",
                                      "m_WorkingPointTTVA"      : "TTVA",
-                                     #"m_SingleMuTrig"          : "HLT_mu20_iloose_L1MU15_OR_HLT_mu50",
-                                     #"m_SingleMuTrig"          : "HLT_mu50",
-                                     "m_SingleMuTrig"          : "",
+                                     "m_SingleMuTrig"          : "HLT_mu26_imedium_OR_HLT_mu50",
                                      "m_DiMuTrig"              : "",
                                    }
 
@@ -496,7 +512,7 @@ SSDiLepTreeAlgoDict      = { "m_name"                  : "physics",
                              "m_outHistDir"            : False,
                              ######"m_evtDetailStr"          : "pileup truth",
                              "m_evtDetailStr"          : "pileup",
-                             "m_trigDetailStr"         : "basic passTriggers menuKeys passTriggers",
+                             "m_trigDetailStr"         : "basic passTriggers menuKeys",
                              "m_muDetailStr"           : "kinematic trigger isolation quality trackparams effSF",
                              "m_elDetailStr"           : "kinematic trigger isolation PID trackparams effSF",
                              #"m_tauDetailStr"          : "kinematic",
