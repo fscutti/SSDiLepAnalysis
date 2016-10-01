@@ -2,9 +2,9 @@
 
 username=fscutti
 
-prodtag=HIGG3D3_p2666_p2667_v1
+prodtag=HIGG3D3_v3_p2689
 
-infilepath="/home/fscutti/Analysis/SSDiLepAnalysis/doc/all_HIGG3D3.txt"
+infilepath="/home/fscutti/Analysis/SSDiLepAnalysis/doc/all_DAOD_HIGG3D3_p2689.txt"
 #infilepath="/home/fscutti/Analysis/SSDiLepAnalysis/doc/failed_jobs.txt"
 
 configpath="$ROOTCOREBIN/user_scripts/SSDiLepAnalysis/jobOptions_FF.py"

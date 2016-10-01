@@ -39,7 +39,15 @@
 #include "TFile.h"
 #include "TSystem.h"
 
-// How to retrieve muon info: https://twiki.cern.ch/twiki/bin/view/Atlas/XAODMuon
+// How to retrieve 
+// Muon info: https://twiki.cern.ch/twiki/bin/view/Atlas/XAODMuon
+// Electron info https://twiki.cern.ch/twiki/bin/view/AtlasProtected/EGammaTruthRun2#egammaTruthParticles
+
+
+// Another truth matching example
+// https://svnweb.cern.ch/trac/atlasphys-hsg8/browser/Physics/Higgs/HSG8/AnalysisCode/multileptons/xAOD/ttHMultiAna/trunk/Root/TruthMatchAlgo.cxx
+
+
 
 // this is needed to distribute the algorithm to the workers
 ClassImp(TruthMatchAlgo)
@@ -175,6 +183,12 @@ EL::StatusCode TruthMatchAlgo :: initialize ()
   m_numEventPass        = 0;
   m_weightNumEventPass  = 0;
   m_numObjectPass       = 0;
+  
+  // signal classification (doubly charged Higgs)
+  m_HLpp_DaughtersDecor = nullptr          ; m_HLpp_DaughtersDecor	    = new SG::AuxElement::Decorator< std::vector<int> >("HLpp_Daughters");
+  m_HLmm_DaughtersDecor = nullptr          ; m_HLmm_DaughtersDecor	    = new SG::AuxElement::Decorator< std::vector<int> >("HLmm_Daughters");
+  m_HRpp_DaughtersDecor = nullptr          ; m_HRpp_DaughtersDecor	    = new SG::AuxElement::Decorator< std::vector<int> >("HRpp_Daughters");
+  m_HRmm_DaughtersDecor = nullptr          ; m_HRmm_DaughtersDecor	    = new SG::AuxElement::Decorator< std::vector<int> >("HRmm_Daughters");
 
   m_isTruthMatchedDecor = nullptr          ; m_isTruthMatchedDecor          = new SG::AuxElement::Decorator< char >("isTruthMatched");	        // has a lepton truth match
   m_truthPdgIdDecor = nullptr	           ; m_truthPdgIdDecor              = new SG::AuxElement::Decorator< int >("truthPdgId");		// pdgId of the match particle
@@ -199,6 +213,9 @@ EL::StatusCode TruthMatchAlgo :: initialize ()
   m_truthMatchProbabilityAcc = nullptr     ; m_truthMatchProbabilityAcc     = new SG::AuxElement::Accessor<float>("truthMatchProbability");
   m_ancestorTruthTypeAcc = nullptr         ; m_ancestorTruthTypeAcc         = new SG::AuxElement::Accessor< int >("ancestorTruthType");
   m_ancestorTruthOriginAcc = nullptr       ; m_ancestorTruthOriginAcc       = new SG::AuxElement::Accessor< int >("ancestorTruthOrigin");
+  
+  
+
 
   // initialise MCTruthClassifier
   //
@@ -235,7 +252,7 @@ EL::StatusCode TruthMatchAlgo :: execute ()
   mcEvtWeight = (*m_mcEvtWeightAcc)( *eventInfo );
 
   m_numEvent++;
-
+  
   // retrieve leptonsCDV from store
   //
   //ConstDataVector<xAOD::IParticleContainer>* leptonsCDV(nullptr);
@@ -284,6 +301,11 @@ EL::StatusCode TruthMatchAlgo :: execute ()
   
 
   if ( m_isMC ) {
+    
+    if ( this->applySignalTruthMatching( eventInfo ) != EL::StatusCode::SUCCESS ) {
+      Error("execute()", "Problem with applySignalTruthMatching()! Aborting" );
+      return EL::StatusCode::FAILURE;
+    }
     
     for ( auto muon_itr : *(inputMuons) ) {
       if ( muon_itr->type() == xAOD::Type::Muon ) {
@@ -340,6 +362,11 @@ EL::StatusCode TruthMatchAlgo :: finalize ()
   // gets called on worker nodes that processed input events.
 
   Info("finalize()", "Deleting pointers...");
+
+  delete m_HLpp_DaughtersDecor;      m_HLpp_DaughtersDecor = nullptr;
+  delete m_HLmm_DaughtersDecor;      m_HLmm_DaughtersDecor = nullptr;
+  delete m_HRpp_DaughtersDecor;      m_HRpp_DaughtersDecor = nullptr;
+  delete m_HRmm_DaughtersDecor;      m_HRmm_DaughtersDecor = nullptr;
 
   delete m_isTruthMatchedDecor;      m_isTruthMatchedDecor = nullptr;
   delete m_truthTypeDecor;           m_truthTypeDecor = nullptr;
@@ -912,3 +939,96 @@ EL::StatusCode TruthMatchAlgo :: doMuonTruthPartMatching ( const xAOD::IParticle
 
 }
 
+
+EL::StatusCode TruthMatchAlgo :: applySignalTruthMatching ( const xAOD::EventInfo* eventInfo )
+{
+
+  (*m_HLpp_DaughtersDecor)( *eventInfo ) = std::vector<int>();
+  (*m_HLmm_DaughtersDecor)( *eventInfo ) = std::vector<int>();
+  (*m_HRpp_DaughtersDecor)( *eventInfo ) = std::vector<int>();
+  (*m_HRmm_DaughtersDecor)( *eventInfo ) = std::vector<int>();
+  
+  (*m_HLpp_DaughtersDecor)( *eventInfo ).push_back(0);
+  (*m_HLmm_DaughtersDecor)( *eventInfo ).push_back(0);
+  (*m_HRpp_DaughtersDecor)( *eventInfo ).push_back(0);
+  (*m_HRmm_DaughtersDecor)( *eventInfo ).push_back(0);
+
+  const xAOD::TruthParticleContainer* TruthPartContainer(nullptr);
+  RETURN_CHECK("TruthMatchAlgo::applyTruthMatchingMuon()", HelperFunctions::retrieve(TruthPartContainer, "TruthParticles", m_event, m_store, m_verbose) , "");
+
+  //std::cout << "signal truth matching " << &TruthPartContainer << std::endl;
+
+  for ( auto truth_itr : *(TruthPartContainer) ) {
+    //std::cout << "inside the loop " << &truth_itr << std::endl;
+    
+    //std::cout << "truth_itr->status() " << truth_itr->status() << std::endl;
+    
+    if( truth_itr->status() == 62 ) {
+       
+       std::vector<int> bosonVect;
+
+       if ( truth_itr->pdgId() == 9900041  ) { bosonVect = (*m_HLpp_DaughtersDecor)( *eventInfo ); }
+       if ( truth_itr->pdgId() == -9900041 ) { bosonVect = (*m_HLmm_DaughtersDecor)( *eventInfo ); }
+       if ( truth_itr->pdgId() == 9900042  ) { bosonVect = (*m_HLpp_DaughtersDecor)( *eventInfo ); }
+       if ( truth_itr->pdgId() == -9900042 ) { bosonVect = (*m_HLmm_DaughtersDecor)( *eventInfo ); }
+       else { continue; } 
+       
+       if ( truth_itr->hasDecayVtx() ) {
+         if ( truth_itr->decayVtx()->nOutgoingParticles() > 0) {
+           
+           //std::cout << std::endl;
+           //std::cout << "Decay vertex found" << std::endl;
+           
+           const std::vector< ElementLink<xAOD::TruthParticleContainer> >& outPart = truth_itr->decayVtx()->outgoingParticleLinks();
+           
+           int nel  = 0;
+           int nmu  = 0;
+           int ntau = 0;
+           int nW   = 0;
+           
+           std::cout << "Nout: "  << outPart.size() << std::endl;      
+           
+           for(unsigned int k=0; k<outPart.size(); ++k){
+             if ( ! (outPart[k]).isValid() ) {
+               std::cout << " out particle not valid " << std::endl;
+               continue;
+             }
+             const xAOD::TruthParticle* kid = *(outPart[k]);
+             if ( fabs(kid->pdgId()) == 11 ) {
+               nel++;
+               bosonVect.push_back(kid->pdgId());
+               std::cout << " ele status: " << kid->status() << std::endl;
+             }
+             if ( fabs(kid->pdgId()) == 13 ) {
+               nmu++;
+               bosonVect.push_back(kid->pdgId());
+               std::cout << " mu status: " << kid->status() << std::endl;
+             }
+             if ( fabs(kid->pdgId()) == 15 ) {
+               ntau++;
+               bosonVect.push_back(kid->pdgId());
+               std::cout << " tau status: " << kid->status() << std::endl;
+             }
+             if ( fabs(kid->pdgId()) == 24 ) {
+               nW++;
+               bosonVect.push_back(kid->pdgId());
+               std::cout << " W status: " << kid->status() << std::endl;
+             }
+           }
+           std::cout << "nel:  " << nel  << std::endl;
+           std::cout << "nmu:  " << nmu  << std::endl;
+           std::cout << "ntau: " << ntau << std::endl;
+           std::cout << "nW:   " << nW   << std::endl;
+         }
+         else{
+           std::cout << " no outgoing particles " << std::endl;
+         }
+       }
+       else{
+         std::cout << " no decay vtx " << std::endl;
+       }
+     }
+   }
+  
+  return EL::StatusCode::SUCCESS;
+}

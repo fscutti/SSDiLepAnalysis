@@ -58,6 +58,11 @@ private:
   int   m_cutflow_bin;      //!
 
   /* Initialise decorators */
+  SG::AuxElement::Decorator< std::vector< int > >*         m_HLpp_DaughtersDecor;            //!
+  SG::AuxElement::Decorator< std::vector< int > >*         m_HLmm_DaughtersDecor;            //!
+  SG::AuxElement::Decorator< std::vector< int > >*         m_HRpp_DaughtersDecor;            //!
+  SG::AuxElement::Decorator< std::vector< int > >*         m_HRmm_DaughtersDecor;            //!
+  
   SG::AuxElement::Decorator< char >* 	   m_isTruthMatchedDecor;	   //! /* has a lepton truth match */
   SG::AuxElement::Decorator< int >*  	   m_truthTypeDecor;		   //! /* type of the parent particle (according to MCTruthClassifier) - need it for muons since we have to retrieve this from the truth track */
   SG::AuxElement::Decorator< int >*  	   m_truthPdgIdDecor;		   //! /* pdgId of the match particle */
@@ -82,6 +87,7 @@ private:
   SG::AuxElement::Accessor< float >*       m_truthMatchProbabilityAcc;     //!
   SG::AuxElement::Accessor< int >*         m_ancestorTruthTypeAcc;         //!
   SG::AuxElement::Accessor< int >*         m_ancestorTruthOriginAcc;       //!
+  
 
   // MC Truth Classifier
   MCTruthClassifier *m_MCTClassifier; //!
@@ -120,6 +126,7 @@ public:
   /     Clearly this is available only within ID coverage (|eta|<2.5).
   /
   */
+  virtual EL::StatusCode applySignalTruthMatching ( const xAOD::EventInfo* eventInfo );
   virtual EL::StatusCode applyTruthMatchingMuon ( const xAOD::IParticle* recoParticle );
   virtual EL::StatusCode doMuonTruthPartMatching ( const xAOD::IParticle* recoParticle );
   virtual EL::StatusCode doMuonTrackMatching ( const xAOD::IParticle* recoParticle );
