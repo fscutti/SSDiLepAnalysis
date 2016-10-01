@@ -23,12 +23,19 @@ c.setalg("ElectronSelector", ElectronSelectorDict)
 ###->c.setalg("TauSelector", TauSelectorDict)
 c.setalg("METConstructor", METConstructorDict)
 c.setalg("OverlapRemover", OverlapRemoverDict)
-c.setalg("MuonEfficiencyCorrector", MuonEfficiencyCorrectorLooseDict)      
+
+c.setalg("MuonEfficiencyCorrector", MuonEfficiencyCorrectorLooseLooseDict)      
+c.setalg("MuonEfficiencyCorrector", MuonEfficiencyCorrectorLooseGradientLooseDict)      
+c.setalg("MuonEfficiencyCorrector", MuonEfficiencyCorrectorLooseGradientDict)      
+c.setalg("MuonEfficiencyCorrector", MuonEfficiencyCorrectorLooseFixedCutTightTrackOnlyDict)      
+c.setalg("MuonEfficiencyCorrector", MuonEfficiencyCorrectorMediumGradientDict)      
+c.setalg("MuonEfficiencyCorrector", MuonEfficiencyCorrectorMediumFixedCutTightTrackOnlyDict)      
+c.setalg("MuonEfficiencyCorrector", MuonEfficiencyCorrectorMediumGradientLooseDict)      
+
 ###c.setalg("ElectronEfficiencyCorrector", ElectronEfficiencyCorrectorDict)
-c.setalg("MuonEfficiencyCorrector", MuonEfficiencyCorrectorMediumDict)
-###c.setalg("ElectronEfficiencyCorrector", ElectronEfficiencyCorrectorMediumDict)
-c.setalg("MuonEfficiencyCorrector", MuonEfficiencyCorrectorTightDict)
+##c.setalg("ElectronEfficiencyCorrector", ElectronEfficiencyCorrectorMediumDict)
 ###c.setalg("ElectronEfficiencyCorrector", ElectronEfficiencyCorrectorTightDict)
+
 c.setalg("TruthMatchAlgo", TruthMatchAlgoDict)
 c.setalg("SSDiLepTreeAlgo", SSDiLepTreeAlgoDict)
 
